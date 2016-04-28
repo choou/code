@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .container{
+            width:auto;
+        }
+        .seat{
+            float:left;
+            height:30px;width:40px;
+            line-height:35px;
+            text-align:center;
+            margin-left:5px;margin-right:5px;margin-top:12px;
+            cursor:pointer;
+            filter:alpha(Opacity=60);-moz-opacity:0.3;opacity: 0.3;
+            background-color: white;
+        }
+        .number{
+            float: left;
+            height: 20px; width: 20px;
+        }
+        span#num{
+            height: 100px;
+        }
+        div#se
+        {
+            background-image: url("http://images.forwallpaper.com/files/thumbs/preview/2/28548__golf_p.jpg");
+        }
+        .clear{ clear:both}
+    </style>
+    <script type="text/javascript">
+        var chooseNums = new Array()
+        var count = 0;
+        var maxCount = 5;
+        function choose(t){
+
+            if (t.style.backgroundColor == "grey", t.style.opacity == "0.7"){
+                count--;
+                if(count<0) count = 0;
+                t.style.backgroundColor = "white"
+                        , t.style.opacity = "0.3"
+
+                var idx = chooseNums.indexOf(t.id) //返回t.id字符串首次出现的位置
+                if (idx != -1)
+                {
+                    chooseNums.splice(idx , 1)
+                }
+            }else{
+                count++;
+                if(count > maxCount){
+                    count = maxCount ;
+                    alert("您选择太多场次了，请分开两次结算");}
+                else{
+                    chooseNums.push(t.id)
+                    t.style.backgroundColor = "grey", t.style.opacity = "0.7";
+                }
+            }
+        }
+        function init(floorCount,siteCount){
+            var a = 20;
+            var b = 10;
+            var clickNum = 0
+            document.getElementById("se").innerHTML += "<div class='seat'></div>" ;
+            for(var i = 1 ; i < siteCount; i ++) {
+                document.getElementById("se").innerHTML += "<div class='seat'>" + i + "" + '号场' + "</div>" ;
+            }
+            document.getElementById("se").innerHTML += "<div class='clear'>";
+            for(var j = 9; j < floorCount; j++){
+                document.getElementById("se").innerHTML += "<div class='seat' >" + j + "" + ':00' + "</div>" ;
+                for(var i = 1 ; i < siteCount; i ++) {
+                    document.getElementById("se").innerHTML += "<div class='seat' id='座位号"+i+"' onclick='choose(this)'></div>" ;
+                }
+                   document.getElementById("se").innerHTML += "<div class='clear'>";
+            }
+             document.getElementById("se").style.width = (siteCount * 50 + a) + "px";
+                document.getElementById("se").style.height = ((floorCount-8) * 40 + a) +"px";
+        }
+
+        function sub(){
+            alert("共选择了：" +chooseNums.length + " 个 - "  + chooseNums)
+        }
+        function $$(ele){
+            return document.getElementById(ele);
+        }
+        var date = new Date();
+        var dateStr = date.getYear() + 1900 + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+
+        function back(){
+            date = new Date(date.getTime()-24*60*60*1000);
+            dateStr = date.getYear() + 1900 + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+            $$("bookDate").innerHTML = dateStr;
+        };
+        function forward(){
+            date = new Date(date.getTime()+24*60*60*1000);
+            dateStr = date.getYear() + 1900 + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+            $$("bookDate").innerHTML = dateStr;
+        };
+        function date(){
+
+        };
+
+    </script>
+</head>
+<div class="siteBook">
+<body onload="init(15,10)" class="container">
+<!--<button id="bookBack" onclick="back();"> < </button><button id="bookDate" onclick="date();">今天</button><button id="bookForward" onclick="forward();"> > </button> -->
+<div id="site"></div>
+<div id="se"></div>
+</body>
+</div>
+</html>
